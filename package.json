@@ -1,0 +1,13 @@
+{
+  "author": "Jozsef Vass",
+  "name": "finora",
+  "description": "A crypto trading app",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "packageManager": "pnpm@10.12.4",
+  "devDependencies": {
+    "prettier": "^3.6.2"
+  }
+}
