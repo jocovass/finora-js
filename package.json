@@ -1,13 +1,20 @@
 {
-  "author": "Jozsef Vass",
   "name": "finora",
-  "description": "A crypto trading app",
+  "description": "Crypto trading app",
+  "author": "Jozsef Vass",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "pnpm --stream -r run dev",
+    "build": "pnpm --stream -r run build",
+    "lint": "pnpm --stream -r run lint",
+    "typecheck": "pnpm --stream -r run typecheck",
+    "test": "pnpm --stream -r run test",
+    "coverage": "pnpm --stream -r run coverage",
+    "syncpack:check": "syncpack list-mismatches"
   },
   "packageManager": "pnpm@10.12.4",
   "devDependencies": {
-    "prettier": "^3.6.2"
+    "prettier": "^3.6.2",
+    "syncpack": "^13.0.4"
   }
 }
