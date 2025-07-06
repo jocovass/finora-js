@@ -13,7 +13,7 @@ export default tseslint.config([
 
 	// Base configuration for all TypeScript files
 	{
-		files: ['src/**/*.{ts,js}'],
+		files: ['src/**/*.ts'],
 		extends: [
 			js.configs.recommended,
 			...tseslint.configs.recommendedTypeChecked,
@@ -111,7 +111,7 @@ export default tseslint.config([
 
 	// Test files configuration
 	{
-		files: ['**/*.test.{ts,js}', '**/*.spec.{ts,js}', '**/tests/**/*.{ts,js}'],
+		files: ['**/*.test.ts', '**/*.spec.ts', '**/tests/**/*.ts'],
 		...vitest.configs.recommended,
 		languageOptions: {
 			parser: tseslint.parser,
@@ -147,19 +147,28 @@ export default tseslint.config([
 
 	// Development files
 	{
-		files: [
-			'**/*.config.{ts,js}',
-			'**/scripts/**/*.{ts,js}',
-			'eslint.config.js',
-		],
+		files: ['**/*.config.ts', '**/scripts/**/*.ts'],
 		languageOptions: {
 			parser: tseslint.parser,
 			parserOptions: {
-				project: './tsconfig.node.json', // ← Config files use app config
+				project: './tsconfig.node.json',
 				tsconfigRootDir: import.meta.dirname,
 				ecmaVersion: 2022,
 				sourceType: 'module',
 			},
+		},
+		rules: {
+			'no-console': 'off',
+			'n/no-process-exit': 'off',
+		},
+	},
+	// JS
+	{
+		files: ['**/*.js'],
+		extends: [js.configs.recommended],
+		languageOptions: {
+			ecmaVersion: 2022,
+			sourceType: 'module',
 		},
 		rules: {
 			'no-console': 'off',

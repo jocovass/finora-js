@@ -10,7 +10,8 @@
     "typecheck": "pnpm --stream -r run typecheck",
     "test": "pnpm --stream -r run test",
     "coverage": "pnpm --stream -r run coverage",
-    "syncpack:check": "syncpack list-mismatches"
+    "syncpack:check": "syncpack list-mismatches",
+    "syncpack:fix": "syncpack fix-mismatches"
   },
   "packageManager": "pnpm@10.12.4",
   "devDependencies": {
