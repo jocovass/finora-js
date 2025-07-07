@@ -1,0 +1,41 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 22
+    commands:
+      - echo "Installing pnpm..."
+      - npm install -g pnpm
+      - pnpm --version
+
+  pre_build:
+    commands:
+      - echo "Installing workspace dependencies..."
+      - pnpm install
+      - echo "Dependencies installed successfully"
+
+  build:
+    commands:
+      - echo "Build started on $(date)"
+      - echo "Building API application with tsup..."
+      - pnpm --filter api build
+      - echo "Checking build output..."
+      - ls -la apps/api/dist/
+      - echo "Build completed successfully"
+
+  post_build:
+    commands:
+      - echo "Post-build tasks..."
+      - echo "Preparing deployment artifacts..."
+      - echo "Build completed on $(date)"
+
+artifacts:
+  files:
+    - 'apps/api/dist/**/*'
+    - 'apps/api/package.json'
+    - 'apps/api/node_modules/**/*'
+    - 'packages/**/*'
+    - 'package.json'
+    - 'pnpm-lock.yaml'
+  name: finora-api-$(date +%Y-%m-%d)
