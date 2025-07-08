@@ -1,0 +1,36 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ec2-user/finora-api
+
+permissions:
+  - object: /home/ec2-user/finora-api
+    pattern: '**'
+    owner: ec2-user
+    group: ec2-user
+    mode: 755
+
+hooks:
+  BeforeInstall:
+    - location: scripts/stop-server.sh
+      timeout: 300
+      runas: ec2-user
+
+  AfterInstall:
+    - location: scripts/install-dependencies.sh
+      timeout: 600
+      runas: ec2-user
+    - location: scripts/run-migrations.sh
+      timeout: 300
+      runas: ec2-user
+
+  ApplicationStart:
+    - location: scripts/start-server.sh
+      timeout: 300
+      runas: ec2-user
+
+  ApplicationStop:
+    - location: scripts/stop-server.sh
+      timeout: 300
+      runas: ec2-user
