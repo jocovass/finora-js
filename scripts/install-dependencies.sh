@@ -9,7 +9,10 @@ if ! command -v node &> /dev/null || [[ $(node --version) != v22* ]]; then
 fi
 
 # Install pnpm globally
-npm install -g pnpm
+sudo npm install -g pnpm
+
+echo "Checking pnpm installation..."
+pnpm --version
 
 echo "Installing dependencies..."
 pnpm install --frozen-lockfile
