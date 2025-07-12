@@ -4,12 +4,12 @@
   "author": "Jozsef Vass",
   "private": true,
   "scripts": {
-    "dev": "pnpm --stream -r run dev",
-    "build": "pnpm --stream -r run build",
-    "lint": "pnpm --stream -r run lint",
-    "typecheck": "pnpm --stream -r run typecheck",
-    "test": "pnpm --stream -r run test",
-    "coverage": "pnpm --stream -r run coverage",
+    "dev": "pnpm --parallel --stream -r run dev",
+    "build": "pnpm --parallel --stream -r run build",
+    "lint": "pnpm --parallel --stream -r run lint",
+    "typecheck": "pnpm --parallel --stream -r run typecheck",
+    "test": "pnpm --parallel --stream -r run test",
+    "coverage": "pnpm --parallel --stream -r run coverage",
     "syncpack:check": "syncpack list-mismatches",
     "syncpack:fix": "syncpack fix-mismatches"
   },
