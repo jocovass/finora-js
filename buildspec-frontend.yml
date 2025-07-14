@@ -10,7 +10,7 @@ phases:
       - pnpm install
   build:
     commands:
-      - pnpm build --filter=frontend
+      - pnpm --filter frontend build
   post_build:
     commands:
       - echo "Deploying to S3..."
