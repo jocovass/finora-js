@@ -9,6 +9,8 @@
     "lint": "pnpm --parallel --stream -r run lint",
     "typecheck": "pnpm --parallel --stream -r run typecheck",
     "test": "pnpm --parallel --stream -r run test",
+    "db:generate": "pnpm --parallel --stream -r run db:generate",
+    "db:migrate": "pnpm --parallel --stream -r run db:migrate",
     "coverage": "pnpm --parallel --stream -r run coverage",
     "syncpack:check": "syncpack list-mismatches",
     "syncpack:fix": "syncpack fix-mismatches"

@@ -1,0 +1,12 @@
+services:
+  database:
+    env_file:
+      - ./apps/api/.env
+    container_name: finora-database
+    image: postgres:17-alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - './config:/docker-entrypoint-initdb.d'
+      - './database/postgres-data:/var/lib/postgresql/data'
+    restart: unless-stopped

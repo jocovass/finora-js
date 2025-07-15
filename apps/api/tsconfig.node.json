@@ -6,5 +6,10 @@
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true
   },
-  "include": ["vitest.config.ts", "eslint.config.js", "tsup.config.ts"]
+  "include": [
+    "vitest.config.ts",
+    "eslint.config.js",
+    "tsup.config.ts",
+    "drizzle.config.ts"
+  ]
 }
