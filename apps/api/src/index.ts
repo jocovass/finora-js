@@ -4,6 +4,7 @@ import express, { json } from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
 
+import { apiRouter } from './routes/index';
 import { parsedEnv } from './utils/parse-env';
 
 const app = express();
@@ -28,9 +29,10 @@ if (parsedEnv.NODE_ENV === 'development') {
 	app.use(morgan('dev'));
 }
 
-app.get('/health', (_req, res) => {
-	res.send(`We are up and running 🎉 ${process.env.NODE_ENV!}`);
-});
+// API
+app.use(apiRouter);
+
+// TODO: unhandled route, error handler
 
 app.listen(parsedEnv.PORT, () => {
 	// eslint-disable-next-line no-console

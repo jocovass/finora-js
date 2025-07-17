@@ -2,8 +2,9 @@ import { drizzle } from 'drizzle-orm/node-postgres';
 import { Pool } from 'pg';
 
 import * as schemas from './schemas';
+import { parsedEnv } from '../utils/parse-env';
 
-const dbUrl = new URL(process.env.DB_URL!);
+const dbUrl = new URL(parsedEnv.DB_URL);
 
 const client = new Pool({
 	database: dbUrl.pathname.slice(1),
