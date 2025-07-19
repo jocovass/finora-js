@@ -29,6 +29,7 @@ export default tseslint.config([
 				tsconfigRootDir: import.meta.dirname,
 				ecmaVersion: 2022,
 				sourceType: 'module',
+				projectService: true,
 			},
 			globals: {
 				...globals.node,
@@ -43,7 +44,7 @@ export default tseslint.config([
 				node: true,
 			},
 			node: {
-				version: '>=18.0.0',
+				version: '>=21.0.0',
 			},
 		},
 		rules: {
@@ -89,7 +90,7 @@ export default tseslint.config([
 			'n/no-process-exit': 'warn',
 
 			// Security rules
-			'security/detect-object-injection': 'warn',
+			'security/detect-object-injection': 'off',
 			'security/detect-non-literal-regexp': 'warn',
 			'security/detect-unsafe-regex': 'error',
 

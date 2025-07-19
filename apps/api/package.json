@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@date-fns/utc": "^2.1.0",
+    "@epic-web/totp": "^4.0.1",
     "@paralleldrive/cuid2": "^2.2.2",
     "@repo/typescript-config": "workspace:*",
     "@repo/validation": "workspace:*",
