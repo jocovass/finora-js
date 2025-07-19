@@ -1,8 +1,11 @@
 import { UTCDate } from '@date-fns/utc';
-import { generateTOTP } from '@epic-web/totp';
+import { generateTOTP, verifyTOTP } from '@epic-web/totp';
+import type { ApiErrorResponse } from '@repo/validation';
+import { eq } from 'drizzle-orm';
 
 import { db } from '../../db/database';
-import { verifications } from '../../db/schemas';
+import { type SelectVerification, verifications } from '../../db/schemas';
+import { simulateProcessing } from '../../utils';
 
 /**
  * 10 minutes
@@ -31,10 +34,9 @@ export async function prepareTOTP({
 	period = verificationMaxAge,
 	type,
 	target,
-}: PrepareTOTP): Promise<string> {
+}: PrepareTOTP): Promise<{ otp: string; verificationId: string }> {
 	const { otp, ...totpConfig } = await generateTOTP({
-		algorithm: 'SHA256',
-		charSet: 'ABCDEFGHIJKLMNPQRSTUVWXYZ123456789',
+		algorithm: 'SHA-256',
 		period,
 	});
 
@@ -45,13 +47,64 @@ export async function prepareTOTP({
 		expiresAt: new UTCDate(Date.now() + period * 1000),
 	};
 
-	await db
+	const record = await db
 		.insert(verifications)
 		.values(verificationConfig)
 		.onConflictDoUpdate({
 			target: [verifications.target, verifications.type],
 			set: verificationConfig,
-		});
+		})
+		.returning({ id: verifications.id });
 
-	return otp;
+	return { otp, verificationId: record[0]?.id as string };
+}
+
+export type IsOtpCodeValidReturn = Promise<
+	| ApiErrorResponse
+	| {
+			status: 'success';
+			data: Omit<
+				SelectVerification,
+				'id' | 'createdAt' | 'updatedAt' | 'expiresAt' | 'type'
+			>;
+	  }
+>;
+export async function isOtpCodeValid({
+	otp,
+	verificationId,
+}: {
+	otp: string;
+	verificationId: string;
+}): IsOtpCodeValidReturn {
+	const record = await db.query.verifications.findFirst({
+		columns: {
+			algorithm: true,
+			charSet: true,
+			digits: true,
+			period: true,
+			secret: true,
+			target: true,
+		},
+		where: (table, { and, eq, gt }) =>
+			and(eq(table.id, verificationId), gt(table.expiresAt, new UTCDate())),
+	});
+	const verificationResult = record
+		? await verifyTOTP({
+				otp,
+				...record,
+			})
+		: await simulateProcessing();
+	if (!record || !verificationResult) {
+		return {
+			status: 'error',
+			error: {
+				message: 'Invalid verification attempt',
+			},
+		};
+	}
+	await db.delete(verifications).where(eq(verifications.id, verificationId));
+	return {
+		status: 'success',
+		data: record,
+	};
 }

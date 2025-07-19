@@ -1,6 +1,6 @@
 import { UTCDate } from '@date-fns/utc';
 import { createId as cuid } from '@paralleldrive/cuid2';
-import { relations } from 'drizzle-orm';
+import { InferSelectModel, InferInsertModel, relations } from 'drizzle-orm';
 import {
 	date,
 	index,
@@ -11,6 +11,7 @@ import {
 	unique,
 	varchar,
 } from 'drizzle-orm/pg-core';
+import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 
 export const finoraSchema = pgSchema('finora');
 
@@ -166,3 +167,8 @@ export const verifications = finoraSchema.table(
 	},
 	table => [unique('unique_target_type').on(table.target, table.type)],
 );
+
+export const selectVerificationSchema = createSelectSchema(verifications);
+export const insertVerificationChema = createInsertSchema(verifications);
+export type SelectVerification = InferSelectModel<typeof verifications>;
+export type InsertVerification = InferInsertModel<typeof verifications>;

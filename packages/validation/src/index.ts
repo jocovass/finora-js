@@ -27,6 +27,11 @@ export interface ApiSuccessResponse {
 
 export type ApiResponse = ApiErrorResponse | ApiSuccessResponse;
 
-export const SigninBody = z.object({
+export const SigninPayload = z.object({
 	email: z.string().email('Invalid email format'),
+});
+
+export const VerificationPayload = z.object({
+	otp: z.string(),
+	verificationId: z.string(),
 });

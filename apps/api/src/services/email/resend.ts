@@ -5,6 +5,15 @@ import { parsedEnv } from '../../utils/parse-env';
 const from = 'onboarding@resend.dev';
 
 export const resendErrorSchema = z.union([
+	z
+		.object({
+			error: z.string(),
+			statusCode: z.number(),
+		})
+		.transform(data => ({
+			message: data.error,
+			statusCode: data.statusCode,
+		})),
 	z.object({
 		name: z.string(),
 		message: z.string(),
