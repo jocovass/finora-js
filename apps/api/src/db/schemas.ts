@@ -168,6 +168,40 @@ export const verifications = finoraSchema.table(
 	table => [unique('unique_target_type').on(table.target, table.type)],
 );
 
+export const sessions = finoraSchema.table(
+	'sessions',
+	{
+		id: varchar('id', { length: 25 })
+			.primaryKey()
+			.$default(() => cuid()),
+		userId: varchar('user_id', { length: 25 })
+			.references(() => users.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			})
+			.notNull(),
+		expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
+		userAgent: text('user_agent'),
+		location: text('location'),
+		createdAt: timestamp('created_at', { withTimezone: true })
+			.defaultNow()
+			.notNull(),
+		updatedAt: timestamp('updated_at', { withTimezone: true })
+			.defaultNow()
+			.$onUpdate(() => new UTCDate())
+			.notNull(),
+	},
+	table => [index('sessions_user_id_idx').on(table.userId)],
+);
+
+export const sessionsRelation = relations(sessions, ({ one }) => ({
+	sessions: one(users, {
+		fields: [sessions.userId],
+		references: [users.id],
+		relationName: 'sessions',
+	}),
+}));
+
 export const selectVerificationSchema = createSelectSchema(verifications);
 export const insertVerificationChema = createInsertSchema(verifications);
 export type SelectVerification = InferSelectModel<typeof verifications>;

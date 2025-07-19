@@ -8,6 +8,13 @@
       "when": 1752786191805,
       "tag": "0000_adorable_talisman",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1752947730155,
+      "tag": "0001_peaceful_pixie",
+      "breakpoints": true
     }
   ]
 }
